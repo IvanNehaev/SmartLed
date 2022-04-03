@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var txtWifi: TextView
     lateinit var btnScan: Button
 
-    lateinit var wifiManager: WifiManager
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,53 +37,8 @@ class MainActivity : AppCompatActivity() {
         btnScan = findViewById(R.id.btnStartScan)
 
         btnScan.setOnClickListener {
-            //setupWifi()
             scanIp()
         }
-    }
-
-    private fun setupWifi() {
-        wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-        val wifiScanReceiver = object : BroadcastReceiver() {
-
-            override fun onReceive(context: Context, intent: Intent) {
-                val success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
-                if (success) {
-                    scanSuccess()
-                } else {
-                    scanFailure()
-                }
-            }
-        }
-
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
-        this.registerReceiver(wifiScanReceiver, intentFilter)
-
-        val success = wifiManager.startScan()
-    }
-
-    private fun scanSuccess() {
-        val results = wifiManager.scanResults
-
-        if (results.isNotEmpty()) {
-            txtWifi.text = results[0].toString()
-        }
-    }
-
-    private fun scanFailure() {
-        // handle failure: new scan did NOT succeed
-        // consider using old scan results: these are the OLD results!
-        val results = wifiManager.scanResults
-    }
-
-    private fun startIpScan() {
-
-        wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-        val wifiInfo = wifiManager.connectionInfo
-
     }
 
     private fun scanIp() {
@@ -105,7 +58,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 ip = "$ipAddress${inetAddress.hostAddress}\n"
-                //var subnet = getSubnetAddress()
                 txtWifi.text = "${txtWifi.text} -- $ip"
                 Log.d(TAG, ip)
             }
@@ -116,15 +68,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getSubnetAddress(address: Int): String {
-        return String.format(
-            "%d.%d.%d",
-            (address and 0xff),
-            (address shr 8 and 0xff),
-            (address shr 16 and 0xff)
-        )
-    }
-
     private fun checkHosts(subnet: String) {
         Log.d(TAG, "Host :: $subnet")
         val splittedIp = subnet.split(".")
@@ -133,21 +76,21 @@ class MainActivity : AppCompatActivity() {
             realSubnet = "$realSubnet${splittedIp[i]}."
         }
         try {
-            val timeout = 5
+            val timeout = 20
             for ( i in 1..255) {
                 val host = "$realSubnet$i"
-                Log.d(TAG, "Check host :: $host")
+                //Log.d(TAG, "Check host :: $host")
                 if (InetAddress.getByName(host).isReachable(timeout)) {
-                    Log.d(TAG, "checkHosts() :: "+host + " is reachable")
+                    Log.d(TAG, "checkHosts() :: $host is reachable")
                 }
             }
         }
         catch (e: UnknownHostException) {
-            Log.d(TAG, "checkHosts() :: UnknownHostException e : "+e)
+            Log.d(TAG, "checkHosts() :: UnknownHostException e : $e")
             e.printStackTrace()
         }
         catch (e: IOException) {
-            Log.d(TAG, "checkHosts() :: IOException e : "+e)
+            Log.d(TAG, "checkHosts() :: IOException e : $e")
             e.printStackTrace()
         }
     }
