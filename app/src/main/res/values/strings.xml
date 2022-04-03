@@ -2,4 +2,9 @@
     <string name="app_name">SmartLed</string>
     <string name="wifi_list">Wifi list:</string>
     <string name="scan">Scan</string>
+    <string name="connect_text">Connect</string>
+    <string name="no_connection_text">no connection</string>
+    <string name="connecting_txt">connecting...</string>
+    <string name="connected_text">connected</string>
+    <string name="connection_error_text">connection error</string>
 </resources>

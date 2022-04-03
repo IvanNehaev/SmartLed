@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import com.nekhaev.android.smartled.presentation.connection.ConnectionFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -18,27 +19,25 @@ import java.net.NetworkInterface
 import java.net.UnknownHostException
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val TAG = MainActivity::class.java.simpleName
 
-    private lateinit var txtWifi: TextView
-    lateinit var btnScan: Button
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+           supportFragmentManager.beginTransaction()
+               .setReorderingAllowed(true)
+               .add(R.id.fragment_container_view, ConnectionFragment())
+               .commit()
+        }
 
         setupView()
     }
 
     private fun setupView() {
-        setContentView(R.layout.activity_main)
-        txtWifi = findViewById(R.id.txtWifi)
-        btnScan = findViewById(R.id.btnStartScan)
 
-        btnScan.setOnClickListener {
-            scanIp()
-        }
+        scanIp()
     }
 
     private fun scanIp() {
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 ip = "$ipAddress${inetAddress.hostAddress}\n"
-                txtWifi.text = "${txtWifi.text} -- $ip"
+
                 Log.d(TAG, ip)
             }
         }
