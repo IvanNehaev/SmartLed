@@ -1,15 +1,8 @@
 package com.nekhaev.android.smartled
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.net.wifi.WifiManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import com.nekhaev.android.smartled.presentation.connection.ConnectionFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,7 +10,6 @@ import java.io.IOException
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.net.UnknownHostException
-import java.util.*
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -69,10 +61,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private fun checkHosts(subnet: String) {
         Log.d(TAG, "Host :: $subnet")
-        val splittedIp = subnet.split(".")
+        val splitIp = subnet.split(".")
         var realSubnet = ""
         for (i in 0..2) {
-            realSubnet = "$realSubnet${splittedIp[i]}."
+            realSubnet = "$realSubnet${splitIp[i]}."
         }
         try {
             val timeout = 20

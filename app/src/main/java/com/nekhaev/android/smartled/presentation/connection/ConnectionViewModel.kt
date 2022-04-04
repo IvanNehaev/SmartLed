@@ -6,6 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nekhaev.android.smartled.R
+import com.nekhaev.android.smartled.data.repository.SmartLedRepositoryImpl
+import com.nekhaev.android.smartled.data.utils.WifiScanUtilImpl
+import com.nekhaev.android.smartled.domain.use_case.GetSmartLedIpUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -18,7 +22,12 @@ class ConnectionViewModel : ViewModel() {
         viewModelScope.launch {
             _state.value = ConnectionState.Loading()
             delay(5000)
-            _state.value = ConnectionState.Connected()
+            val smartLedIp = GetSmartLedIpUseCase(WifiScanUtilImpl(), SmartLedRepositoryImpl()).invoke()
+            if (smartLedIp.isEmpty()) {
+                _state.value = ConnectionState.Error(R.string.connection_error_text)
+            } else {
+                _state.value = ConnectionState.Connected()
+            }
         }
     }
 }
