@@ -10,6 +10,7 @@ import java.net.UnknownHostException
 class WifiScanUtilImpl: WifiScanUtil {
 
     private val TAG = this.javaClass.simpleName.toString()
+    private val TIMEOUT = 40
 
     override suspend fun getHostAddress(): String {
         val enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces()
@@ -35,12 +36,13 @@ class WifiScanUtilImpl: WifiScanUtil {
             newAddress = "$newAddress${splitIp[i]}."
         }
         try {
-            val timeout = 20
+            val timeout = TIMEOUT
             for ( i in 1..255) {
                 val host = "$newAddress$i"
                 if (InetAddress.getByName(host).isReachable(timeout)) {
                     Log.d(TAG, "checkHosts() :: $host is reachable")
-                    addressList.add(host)
+                    if (subnet != host)
+                        addressList.add(host)
                 }
             }
         }

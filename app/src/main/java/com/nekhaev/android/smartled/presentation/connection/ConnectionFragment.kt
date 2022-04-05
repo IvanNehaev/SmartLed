@@ -46,7 +46,7 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
                     setLoadingState()
                 }
                 is ConnectionState.Connected -> {
-                    setConnectedState()
+                    setConnectedState(connectionState.smartLedAddress)
                 }
                 is ConnectionState.Error -> {
                     setErrorState()
@@ -64,11 +64,11 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
         mTxtConnectionResult.visibility = View.GONE
     }
 
-    private fun setConnectedState() {
+    private fun setConnectedState(address: String) {
         mProgress.visibility = View.GONE
         mBtnConnect.isEnabled = false
         mTxtConnectionResult.visibility = View.VISIBLE
-        mTxtConnectionResult.text = getString(R.string.connected_text)
+        mTxtConnectionResult.text = "${getString(R.string.connected_text)} to $address"
     }
 
     private fun setErrorState() {
