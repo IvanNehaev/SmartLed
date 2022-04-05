@@ -24,11 +24,6 @@ class ConnectionViewModel : ViewModel() {
             var smartLedIp = ""
 
             viewModelScope.launch(Dispatchers.IO) {
-//                val wifiScanUtilImpl = WifiScanUtilImpl()
-//                val hostIp = wifiScanUtilImpl.getHostAddress()
-//                val addressList = wifiScanUtilImpl.scanSubnet(hostIp)
-//                smartLedIp = addressList[0]
-
                 smartLedIp = GetSmartLedIpUseCase(
                     wifiScanUtil = WifiScanUtilImpl(),
                     smartLedRepository = SmartLedRepositoryImpl(SmartLedApiImpl())
