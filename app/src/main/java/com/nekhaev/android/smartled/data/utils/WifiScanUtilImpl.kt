@@ -6,11 +6,12 @@ import java.io.IOException
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.net.UnknownHostException
+import javax.inject.Inject
 
-class WifiScanUtilImpl: WifiScanUtil {
+class WifiScanUtilImpl : WifiScanUtil {
 
     private val TAG = this.javaClass.simpleName.toString()
-    private val TIMEOUT = 40
+    private val TIMEOUT = 15
 
     override suspend fun getHostAddress(): String {
         val enumNetworkInterfaces = NetworkInterface.getNetworkInterfaces()

@@ -5,5 +5,4 @@ interface WifiScanUtil {
     suspend fun getHostAddress(): String
 
     suspend fun scanSubnet(subnet: String): List<String>
-
 }

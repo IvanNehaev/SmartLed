@@ -1,32 +1,73 @@
 package com.nekhaev.android.smartled.data.remote
 
 import android.util.Log
+import androidx.compose.ui.res.integerArrayResource
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 import java.lang.Exception
 import java.lang.IllegalStateException
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import javax.inject.Inject
 
-class SmartLedApiImpl : SmartLedApi {
+class SmartLedApiImpl: SmartLedApi {
 
     private val TAG = SmartLedApiImpl::class.java.simpleName.toString()
     private val baseUrl = "http://"
 
-    override fun getControlPanel(ip: String): Boolean {
-        val client = OkHttpClient()
+    private val client = OkHttpClient()
+
+    override var smartLedIp: String = ""
+
+    override fun isReachable() = getControlPanel()
+
+    override fun getControlPanel(): Boolean {
+
         val request = Request.Builder()
-            .url("$baseUrl$ip")
+            .url("$baseUrl$smartLedIp")
             .build()
 
         try {
-            var response = client.newCall(request).execute()
-            Log.d(TAG, "GET $baseUrl$ip Code: ${response.code} isSuccessful: ${response.isSuccessful}")
+            val response = client.newCall(request).execute()
+            Log.d(
+                TAG,
+                "GET $baseUrl$smartLedIp Code: ${response.code} isSuccessful: ${response.isSuccessful}"
+            )
             return response.isSuccessful
         } catch (e: IOException) {
             Log.e(TAG, e.toString())
         } catch (e: IllegalStateException) {
             Log.e(TAG, e.toString())
+        }
+        return false
+    }
+
+    override fun setBrightness(value: Int): Boolean {
+        val urlBuilder = "$baseUrl$smartLedIp".toHttpUrlOrNull()?.newBuilder()
+
+        urlBuilder?.let { builder ->
+            builder.addQueryParameter("b", "$value")
+
+            val url = builder.build().toString()
+
+            val request = Request.Builder()
+                .url(url)
+                .build()
+
+            try {
+                val response = client.newCall(request).execute()
+                Log.d(
+                    TAG,
+                    "$url CODE: ${response.code}"
+                )
+                return response.isSuccessful
+            } catch (e: IOException) {
+                Log.e(TAG, e.toString())
+            } catch (e: IllegalStateException) {
+                Log.e(TAG, e.toString())
+            }
         }
         return false
     }

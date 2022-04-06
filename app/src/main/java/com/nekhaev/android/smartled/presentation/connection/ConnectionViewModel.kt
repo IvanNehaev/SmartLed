@@ -9,11 +9,16 @@ import com.nekhaev.android.smartled.data.remote.SmartLedApiImpl
 import com.nekhaev.android.smartled.data.repository.SmartLedRepositoryImpl
 import com.nekhaev.android.smartled.data.utils.WifiScanUtilImpl
 import com.nekhaev.android.smartled.domain.use_case.GetSmartLedIpUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ConnectionViewModel : ViewModel() {
+@HiltViewModel
+class ConnectionViewModel @Inject constructor(
+    private val getSmartLedIpUseCase: GetSmartLedIpUseCase
+) : ViewModel() {
 
     private val _state = MutableLiveData<ConnectionState>(ConnectionState.NoConnection())
     val state: LiveData<ConnectionState> = _state
@@ -24,10 +29,7 @@ class ConnectionViewModel : ViewModel() {
             var smartLedIp = ""
 
             viewModelScope.launch(Dispatchers.IO) {
-                smartLedIp = GetSmartLedIpUseCase(
-                    wifiScanUtil = WifiScanUtilImpl(),
-                    smartLedRepository = SmartLedRepositoryImpl(SmartLedApiImpl())
-                ).invoke()
+                smartLedIp = getSmartLedIpUseCase()
             }.join()
 
             if (smartLedIp.isEmpty()) {

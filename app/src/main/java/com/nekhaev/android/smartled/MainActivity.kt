@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.nekhaev.android.smartled.presentation.connection.ConnectionFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -11,6 +12,7 @@ import java.net.InetAddress
 import java.net.NetworkInterface
 import java.net.UnknownHostException
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val TAG = MainActivity::class.java.simpleName
