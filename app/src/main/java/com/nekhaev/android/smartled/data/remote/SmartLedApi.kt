@@ -8,5 +8,5 @@ interface SmartLedApi {
 
     fun getControlPanel(): Boolean
 
-    fun setBrightness(value: Int): Boolean
+    suspend fun setBrightness(value: Int): Boolean
 }

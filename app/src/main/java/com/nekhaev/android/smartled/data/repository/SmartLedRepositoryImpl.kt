@@ -19,4 +19,8 @@ class SmartLedRepositoryImpl @Inject constructor(
         }
         return ""
     }
+
+    override suspend fun setBrightness(value: Int) {
+        api.setBrightness(value)
+    }
 }

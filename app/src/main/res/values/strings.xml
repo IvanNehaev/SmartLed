@@ -7,4 +7,6 @@
     <string name="connecting_txt">connecting...</string>
     <string name="connected_text">connected</string>
     <string name="connection_error_text">connection error</string>
+    <string name="up_text">up</string>
+    <string name="down_text">down</string>
 </resources>

@@ -16,6 +16,7 @@ class SmartLedApiImpl: SmartLedApi {
 
     private val TAG = SmartLedApiImpl::class.java.simpleName.toString()
     private val baseUrl = "http://"
+    private val setUrl = "/set"
 
     private val client = OkHttpClient()
 
@@ -44,8 +45,8 @@ class SmartLedApiImpl: SmartLedApi {
         return false
     }
 
-    override fun setBrightness(value: Int): Boolean {
-        val urlBuilder = "$baseUrl$smartLedIp".toHttpUrlOrNull()?.newBuilder()
+    override suspend fun setBrightness(value: Int): Boolean {
+        val urlBuilder = "$baseUrl$smartLedIp$setUrl".toHttpUrlOrNull()?.newBuilder()
 
         urlBuilder?.let { builder ->
             builder.addQueryParameter("b", "$value")
@@ -55,7 +56,6 @@ class SmartLedApiImpl: SmartLedApi {
             val request = Request.Builder()
                 .url(url)
                 .build()
-
             try {
                 val response = client.newCall(request).execute()
                 Log.d(

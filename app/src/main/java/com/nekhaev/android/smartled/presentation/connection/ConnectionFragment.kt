@@ -1,21 +1,27 @@
 package com.nekhaev.android.smartled.presentation.connection
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.nekhaev.android.smartled.R
+import com.nekhaev.android.smartled.presentation.control_panel.ControlPanelFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.IllegalStateException
 import java.util.*
 
 @AndroidEntryPoint
 class ConnectionFragment: Fragment(R.layout.fragment_connection) {
+
+    private val TAG = ConnectionFragment::class.java.simpleName.toString()
 
     private lateinit var mBtnConnect: Button
     private lateinit var mProgress: ProgressBar
@@ -47,6 +53,7 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
                 }
                 is ConnectionState.Connected -> {
                     setConnectedState(connectionState.smartLedAddress)
+                    navigateToControlPanel()
                 }
                 is ConnectionState.Error -> {
                     setErrorState()
@@ -55,6 +62,17 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
                     setNoConnectionState()
                 }
             }
+        }
+    }
+
+    private fun navigateToControlPanel() {
+        try {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container_view, ControlPanelFragment())
+                commit()
+            }
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
         }
     }
 
