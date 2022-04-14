@@ -1,22 +1,17 @@
 package com.nekhaev.android.smartled.data.remote
 
 import android.util.Log
-import androidx.compose.ui.res.integerArrayResource
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import java.io.IOException
-import java.lang.Exception
 import java.lang.IllegalStateException
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
-import javax.inject.Inject
 
 class SmartLedApiImpl: SmartLedApi {
 
     private val TAG = SmartLedApiImpl::class.java.simpleName.toString()
     private val baseUrl = "http://"
-    private val setUrl = "/set"
+    private val setCommandUrl = "/set"
 
     private val client = OkHttpClient()
 
@@ -46,7 +41,7 @@ class SmartLedApiImpl: SmartLedApi {
     }
 
     override suspend fun setBrightness(value: Int): Boolean {
-        val urlBuilder = "$baseUrl$smartLedIp$setUrl".toHttpUrlOrNull()?.newBuilder()
+        val urlBuilder = "$baseUrl$smartLedIp$setCommandUrl".toHttpUrlOrNull()?.newBuilder()
 
         urlBuilder?.let { builder ->
             builder.addQueryParameter("b", "$value")
