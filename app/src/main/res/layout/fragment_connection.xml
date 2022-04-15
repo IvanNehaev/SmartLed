@@ -7,8 +7,8 @@
 
     <com.nekhaev.android.smartled.presentation.views.ColorPickerView
         android:id="@+id/customView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
