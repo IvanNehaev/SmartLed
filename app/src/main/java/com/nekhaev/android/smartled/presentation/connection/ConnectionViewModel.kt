@@ -24,6 +24,8 @@ class ConnectionViewModel @Inject constructor(
     private val _state = MutableLiveData<ConnectionState>(ConnectionState.NoConnection())
     val state: LiveData<ConnectionState> = _state
 
+    var pickedColor: Int = 0
+
     fun onButtonConnectClick() {
         _state.value = ConnectionState.Loading()
         viewModelScope.launch {
@@ -39,5 +41,9 @@ class ConnectionViewModel @Inject constructor(
                 _state.value = ConnectionState.Connected(smartLedIp)
             }
         }
+    }
+
+    fun onColorPicked(color: Int) {
+        pickedColor = color
     }
 }

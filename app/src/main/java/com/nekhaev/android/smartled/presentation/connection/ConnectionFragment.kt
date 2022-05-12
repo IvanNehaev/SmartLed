@@ -1,22 +1,19 @@
 package com.nekhaev.android.smartled.presentation.connection
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import androidx.lifecycle.lifecycleScope
 import com.nekhaev.android.smartled.R
 import com.nekhaev.android.smartled.presentation.control_panel.ControlPanelFragment
+import com.nekhaev.android.smartled.presentation.views.ColorPickerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import java.lang.IllegalStateException
-import java.util.*
 
 @AndroidEntryPoint
 class ConnectionFragment: Fragment(R.layout.fragment_connection) {
@@ -26,6 +23,7 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
     private lateinit var mBtnConnect: Button
     private lateinit var mProgress: ProgressBar
     private lateinit var mTxtConnectionResult: TextView
+    private lateinit var mColorPickerView: ColorPickerView
 
     private val viewModel: ConnectionViewModel by viewModels()
 
