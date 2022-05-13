@@ -24,7 +24,6 @@ class ConnectionViewModel @Inject constructor(
     private val _state = MutableLiveData<ConnectionState>(ConnectionState.NoConnection())
     val state: LiveData<ConnectionState> = _state
 
-    var pickedColor: Int = 0
 
     fun onButtonConnectClick() {
         _state.value = ConnectionState.Loading()
@@ -43,7 +42,4 @@ class ConnectionViewModel @Inject constructor(
         }
     }
 
-    fun onColorPicked(color: Int) {
-        pickedColor = color
-    }
 }

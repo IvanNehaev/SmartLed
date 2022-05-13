@@ -23,7 +23,6 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
     private lateinit var mBtnConnect: Button
     private lateinit var mProgress: ProgressBar
     private lateinit var mTxtConnectionResult: TextView
-    private lateinit var mColorPickerView: ColorPickerView
 
     private val viewModel: ConnectionViewModel by viewModels()
 
