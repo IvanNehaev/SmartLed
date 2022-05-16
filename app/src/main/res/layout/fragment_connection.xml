@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.nekhaev.android.smartled.presentation.views.FairyLightsView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.nekhaev.android.smartled.presentation.views.fairyLightView.FairyLightsView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/connection_txtConnectionResult"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
