@@ -1,5 +1,6 @@
 package com.nekhaev.android.smartled.presentation.connection
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -10,19 +11,22 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.nekhaev.android.smartled.R
 import com.nekhaev.android.smartled.presentation.control_panel.ControlPanelFragment
-import com.nekhaev.android.smartled.presentation.views.ColorPickerView
+import com.nekhaev.android.smartled.presentation.views.fairyLightView.FairyLightsView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
 
 @AndroidEntryPoint
-class ConnectionFragment: Fragment(R.layout.fragment_connection) {
+class ConnectionFragment : Fragment(R.layout.fragment_connection) {
 
     private val TAG = ConnectionFragment::class.java.simpleName.toString()
 
     private lateinit var mBtnConnect: Button
     private lateinit var mProgress: ProgressBar
     private lateinit var mTxtConnectionResult: TextView
+    private lateinit var mFairyLightsView: FairyLightsView
 
     private val viewModel: ConnectionViewModel by viewModels()
 
@@ -33,6 +37,25 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
         setStateObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            var index = 0
+
+            while (true) {
+                mFairyLightsView.setFairyLightColor(index, Color.GREEN)
+                if (index < mFairyLightsView.fairyLightsCount - 1) {
+                    index++
+                } else {
+                    index = 0
+                }
+                mFairyLightsView.setFairyLightColor(index, Color.BLUE)
+                delay(500)
+            }
+        }
+    }
+
     private fun setupUi(view: View) {
         mProgress = view.findViewById(R.id.connection_progress)
         mTxtConnectionResult = view.findViewById(R.id.connection_txtConnectionResult)
@@ -40,6 +63,8 @@ class ConnectionFragment: Fragment(R.layout.fragment_connection) {
         mBtnConnect.setOnClickListener {
             viewModel.onButtonConnectClick()
         }
+
+        mFairyLightsView = view.findViewById(R.id.fairyLightsView)
     }
 
     private fun setStateObserver() {
