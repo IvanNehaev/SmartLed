@@ -40,6 +40,7 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
     override fun onResume() {
         super.onResume()
 
+        // Color test
         lifecycleScope.launch(Dispatchers.Main) {
             var index = 0
 
@@ -52,6 +53,33 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
                 }
                 mFairyLightsView.setFairyLightColor(index, Color.BLUE)
                 delay(500)
+            }
+        }
+
+        // Scale test
+        lifecycleScope.launch(Dispatchers.Main) {
+            var scale = 1f
+            var upscale = 1
+
+            while (true) {
+                mFairyLightsView.fairyLightsList.map {
+                    it.scaleFactor = scale
+                }
+                mFairyLightsView.setFairyLightScale(0, scale)
+                if (upscale == 1) {
+                    if (scale < 10f) {
+                        scale += 0.1f
+                    } else {
+                        upscale = 0
+                    }
+                } else {
+                    if (scale > 0) {
+                        scale -= 0.1f
+                    } else {
+                        upscale = 1
+                    }
+                }
+                delay(70)
             }
         }
     }

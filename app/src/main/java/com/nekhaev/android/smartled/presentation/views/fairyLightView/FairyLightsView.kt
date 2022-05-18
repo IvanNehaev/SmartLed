@@ -69,9 +69,15 @@ class FairyLightsView : View {
             mFairyLightsList[number].color = color
             this.invalidate()
         } catch (e: Exception) {
-
         }
+    }
 
+    fun setFairyLightScale(index: Int, scale: Float) {
+        try {
+            mFairyLightsList[index].scaleFactor = scale
+            this.invalidate()
+        } catch (e: Exception) {
+        }
     }
 
     private fun prepareFairyLightParams(width: Int, height: Int) {
@@ -80,7 +86,7 @@ class FairyLightsView : View {
         mFairyLightsHeight = height.toFloat()
 
         for (i in 0 until mFairyLightsCount) {
-            mFairyLightsList.add(FairyLight(Color.GREEN))
+            mFairyLightsList.add(FairyLight(Color.GREEN,1f))
         }
     }
 
@@ -88,12 +94,12 @@ class FairyLightsView : View {
         var startX = 0f
 
         mFairyLightsList.map { fairyLight ->
-            drawFairyLight(canvas, startX, 0f, fairyLight.color)
+            drawFairyLight(canvas, startX, 0f, fairyLight.color, fairyLight.scaleFactor)
             startX += mFairyLightsWidth
         }
     }
 
-    private fun drawFairyLight(canvas: Canvas, x: Float, y: Float, color: Int) {
+    private fun drawFairyLight(canvas: Canvas, x: Float, y: Float, color: Int, scale: Float) {
         val lineHeight = mFairyLightsHeight
         val lineWidth = mFairyLightsWidth
 
@@ -102,7 +108,9 @@ class FairyLightsView : View {
         // Matrix for scaling
         val matrix = Matrix()
         matrix.reset()
-        matrix.setScale(1f, scaleFactor * 1f, x + lineWidth / 2, y)
+//        matrix.setScale(1f, scaleFactor * 1f, x + lineWidth / 2, y)
+        matrix.setScale(1f, scale, x + lineWidth / 2, y)
+
 
         // Radial gradient shader
         val shader = RadialGradient(
