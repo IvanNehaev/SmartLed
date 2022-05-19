@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.nekhaev.android.smartled.R
+import com.nekhaev.android.smartled.presentation.afterMeasured
 import com.nekhaev.android.smartled.presentation.control_panel.ControlPanelFragment
 import com.nekhaev.android.smartled.presentation.views.fairyLightView.FairyLightsView
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
 
     override fun onResume() {
         super.onResume()
-
+        mFairyLightsView.viewTreeObserver
         // Color test
         lifecycleScope.launch(Dispatchers.Main) {
             var index = 0
