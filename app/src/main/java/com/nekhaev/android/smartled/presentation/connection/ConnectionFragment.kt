@@ -8,15 +8,12 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.nekhaev.android.smartled.R
 import com.nekhaev.android.smartled.presentation.afterMeasured
 import com.nekhaev.android.smartled.presentation.control_panel.ControlPanelFragment
+import com.nekhaev.android.smartled.presentation.views.fairyLightView.FairyLightAnimations
 import com.nekhaev.android.smartled.presentation.views.fairyLightView.FairyLightsView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.lang.IllegalStateException
 
 @AndroidEntryPoint
@@ -40,49 +37,48 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
 
     override fun onResume() {
         super.onResume()
-        mFairyLightsView.viewTreeObserver
         // Color test
-        lifecycleScope.launch(Dispatchers.Main) {
-            var index = 0
-
-            while (true) {
-                mFairyLightsView.setFairyLightColor(index, Color.GREEN)
-                if (index < mFairyLightsView.fairyLightsCount - 1) {
-                    index++
-                } else {
-                    index = 0
-                }
-                mFairyLightsView.setFairyLightColor(index, Color.BLUE)
-                delay(500)
-            }
-        }
+//        lifecycleScope.launch(Dispatchers.Main) {
+//            var index = 0
+//
+//            while (true) {
+//                mFairyLightsView.setFairyLightColor(index, Color.GREEN)
+//                if (index < mFairyLightsView.fairyLightsCount - 1) {
+//                    index++
+//                } else {
+//                    index = 0
+//                }
+//                mFairyLightsView.setFairyLightColor(index, Color.BLUE)
+//                delay(500)
+//            }
+//        }
 
         // Scale test
-        lifecycleScope.launch(Dispatchers.Main) {
-            var scale = 1f
-            var upscale = 1
-
-            while (true) {
-                mFairyLightsView.fairyLightsList.map {
-                    it.scaleFactor = scale
-                }
-                mFairyLightsView.setFairyLightScale(0, scale)
-                if (upscale == 1) {
-                    if (scale < 10f) {
-                        scale += 0.1f
-                    } else {
-                        upscale = 0
-                    }
-                } else {
-                    if (scale > 0) {
-                        scale -= 0.1f
-                    } else {
-                        upscale = 1
-                    }
-                }
-                delay(70)
-            }
-        }
+//        lifecycleScope.launch(Dispatchers.Main) {
+//            var scale = 1f
+//            var upscale = 1
+//
+//            while (true) {
+//                mFairyLightsView.fairyLightsList.map {
+//                    it.scaleFactor = scale
+//                }
+//                mFairyLightsView.setFairyLightScale(0, scale)
+//                if (upscale == 1) {
+//                    if (scale < 10f) {
+//                        scale += 0.1f
+//                    } else {
+//                        upscale = 0
+//                    }
+//                } else {
+//                    if (scale > 0) {
+//                        scale -= 0.1f
+//                    } else {
+//                        upscale = 1
+//                    }
+//                }
+//                delay(70)
+//            }
+//        }
     }
 
     private fun setupUi(view: View) {
@@ -94,6 +90,11 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
         }
 
         mFairyLightsView = view.findViewById(R.id.fairyLightsView)
+        mFairyLightsView.afterMeasured { this as FairyLightsView
+            //this.effects.onStartEffect()
+            this.setFairyLightsBrightness(50)
+            this.effects.loadingEffect()
+        }
     }
 
     private fun setStateObserver() {

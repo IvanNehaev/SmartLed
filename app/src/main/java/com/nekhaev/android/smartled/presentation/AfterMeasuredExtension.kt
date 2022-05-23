@@ -8,6 +8,7 @@ inline fun View.afterMeasured(crossinline f: View. () -> Unit) {
         override fun onGlobalLayout() {
             if (measuredHeight > 0 && measuredWidth > 0) {
                 viewTreeObserver.removeOnGlobalLayoutListener(this)
+                f()
             }
         }
     })

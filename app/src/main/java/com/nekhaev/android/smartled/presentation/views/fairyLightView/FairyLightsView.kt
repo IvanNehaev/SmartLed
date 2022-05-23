@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import java.lang.Exception
+import kotlin.Exception
 import kotlin.math.min
 
 
@@ -12,6 +12,7 @@ class FairyLightsView : View {
 
     companion object {
         private const val MIN_LIGHT_WIDTH = 200f
+        private const val DEFAULT_BRIGHTNESS = 1
     }
 
     var fairyLightsCount
@@ -19,6 +20,7 @@ class FairyLightsView : View {
         private set(value) {}
 
 
+    var effects = FairyLightAnimations(this)
 
     private var mFairyLightsCount = 1 // Count of fairyLights
     private var mFairyLightsWidth = MIN_LIGHT_WIDTH
@@ -72,12 +74,18 @@ class FairyLightsView : View {
         }
     }
 
-    fun setFairyLightScale(index: Int, scale: Float) {
-        try {
-            mFairyLightsList[index].scaleFactor = scale
-            this.invalidate()
-        } catch (e: Exception) {
+    fun setFairyLightsColor(color: Int) {
+        mFairyLightsList.map {
+            it.color = color
         }
+        this.invalidate()
+    }
+
+    fun setFairyLightsBrightness(brightness: Int) {
+        mFairyLightsList.map {
+            it.brightness = brightness
+        }
+        this.invalidate()
     }
 
     private fun prepareFairyLightParams(width: Int, height: Int) {
@@ -86,7 +94,7 @@ class FairyLightsView : View {
         mFairyLightsHeight = height.toFloat()
 
         for (i in 0 until mFairyLightsCount) {
-            mFairyLightsList.add(FairyLight(Color.GREEN,1f))
+            mFairyLightsList.add(FairyLight(Color.YELLOW, DEFAULT_BRIGHTNESS))
         }
     }
 
@@ -94,22 +102,27 @@ class FairyLightsView : View {
         var startX = 0f
 
         mFairyLightsList.map { fairyLight ->
-            drawFairyLight(canvas, startX, 0f, fairyLight.color, fairyLight.scaleFactor)
+            drawFairyLight(canvas, startX, 0f, fairyLight.color, fairyLight.brightness)
             startX += mFairyLightsWidth
         }
     }
 
-    private fun drawFairyLight(canvas: Canvas, x: Float, y: Float, color: Int, scale: Float) {
+    private fun drawFairyLight(canvas: Canvas, x: Float, y: Float, color: Int, brightness: Int) {
         val lineHeight = mFairyLightsHeight
         val lineWidth = mFairyLightsWidth
 
-        val scaleFactor = lineHeight / lineWidth
+        // max height it's height of whole view
+        val maxHeight = mFairyLightsHeight
+        // min height it's shader radius
+        val minHeight = lineWidth / 2
+        // target height it's passed percent of max height
+        val targetHeight = maxHeight / 100 * brightness
+        val yScale = targetHeight / minHeight
 
         // Matrix for scaling
         val matrix = Matrix()
         matrix.reset()
-//        matrix.setScale(1f, scaleFactor * 1f, x + lineWidth / 2, y)
-        matrix.setScale(1f, scale, x + lineWidth / 2, y)
+        matrix.setScale(1f, yScale, x + lineWidth / 2, y)
 
 
         // Radial gradient shader
