@@ -3,6 +3,8 @@ package com.nekhaev.android.smartled.data.utils
 import android.util.Log
 import com.nekhaev.android.smartled.domain.utils.WifiScanUtil
 import java.io.IOException
+import java.lang.Error
+import java.lang.IndexOutOfBoundsException
 import java.net.InetAddress
 import java.net.NetworkInterface
 import java.net.UnknownHostException
@@ -33,9 +35,16 @@ class WifiScanUtilImpl : WifiScanUtil {
         Log.d(TAG, "Host :: $subnet")
         val splitIp = subnet.split(".")
         var newAddress = ""
-        for (i in 0..2) {
-            newAddress = "$newAddress${splitIp[i]}."
+        splitIp.map {
+            newAddress = "$newAddress$it."
         }
+//        for (i in 0..2) {
+//            try {
+//                newAddress = "$newAddress${splitIp[i]}."
+//            } catch (e: IndexOutOfBoundsException) {
+//                Log.d(TAG, "che")
+//            }
+//        }
         try {
             val timeout = TIMEOUT
             for ( i in 1..255) {

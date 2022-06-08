@@ -1,10 +1,15 @@
 package com.nekhaev.android.smartled.presentation.views.fairyLightView
 
+import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.animation.ValueAnimator.REVERSE
 import android.graphics.Color
+import android.graphics.CornerPathEffect
+import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 
 class FairyLightAnimations(
     private val view: FairyLightsView
@@ -13,13 +18,14 @@ class FairyLightAnimations(
     companion object {
         private const val START_EFFECT_DURATION_MS = 2000L
         private const val LOADING_EFFECT_DURATION_MS = 1000L
+        private const val ERROR_EFFECT_DURATION_MS = 1000L
         private const val LOADING_DEFAULT_INDICATOR_COLOR = Color.GREEN
     }
 
     private var animator: ValueAnimator? = null
 
     fun onStartEffect() {
-        ValueAnimator.ofInt(0, 50).apply {
+        ValueAnimator.ofInt(0, 30).apply {
             duration = START_EFFECT_DURATION_MS
             interpolator = LinearInterpolator()
             addUpdateListener { valueAnimator ->
@@ -57,5 +63,24 @@ class FairyLightAnimations(
             }
         }
         animator?.start()
+    }
+
+    fun errorEffect() {
+        animator?.cancel()
+
+        toSingleColorEffect(Color.RED)
+    }
+
+    fun toSingleColorEffect(@ColorInt color: Int) {
+        repeat(view.fairyLightsCount) { i ->
+            val lightColor = view.fairyLightsList[i].color
+            ValueAnimator.ofArgb(lightColor, color).apply {
+                duration = 1000L
+                interpolator = LinearInterpolator()
+                addUpdateListener {
+                    view.setFairyLightColor(i, it.animatedValue as Int)
+                }
+            }.start()
+        }
     }
 }

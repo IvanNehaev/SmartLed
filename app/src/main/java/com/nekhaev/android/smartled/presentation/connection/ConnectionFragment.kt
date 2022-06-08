@@ -35,52 +35,6 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
         setStateObserver()
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Color test
-//        lifecycleScope.launch(Dispatchers.Main) {
-//            var index = 0
-//
-//            while (true) {
-//                mFairyLightsView.setFairyLightColor(index, Color.GREEN)
-//                if (index < mFairyLightsView.fairyLightsCount - 1) {
-//                    index++
-//                } else {
-//                    index = 0
-//                }
-//                mFairyLightsView.setFairyLightColor(index, Color.BLUE)
-//                delay(500)
-//            }
-//        }
-
-        // Scale test
-//        lifecycleScope.launch(Dispatchers.Main) {
-//            var scale = 1f
-//            var upscale = 1
-//
-//            while (true) {
-//                mFairyLightsView.fairyLightsList.map {
-//                    it.scaleFactor = scale
-//                }
-//                mFairyLightsView.setFairyLightScale(0, scale)
-//                if (upscale == 1) {
-//                    if (scale < 10f) {
-//                        scale += 0.1f
-//                    } else {
-//                        upscale = 0
-//                    }
-//                } else {
-//                    if (scale > 0) {
-//                        scale -= 0.1f
-//                    } else {
-//                        upscale = 1
-//                    }
-//                }
-//                delay(70)
-//            }
-//        }
-    }
-
     private fun setupUi(view: View) {
         mProgress = view.findViewById(R.id.connection_progress)
         mTxtConnectionResult = view.findViewById(R.id.connection_txtConnectionResult)
@@ -90,30 +44,23 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
         }
 
         mFairyLightsView = view.findViewById(R.id.fairyLightsView)
-        mFairyLightsView.afterMeasured { this as FairyLightsView
-            //this.effects.onStartEffect()
-            this.setFairyLightsBrightness(50)
-            this.effects.loadingEffect()
+        mFairyLightsView.afterMeasured {
+            this as FairyLightsView
+            this.effects.onStartEffect()
         }
     }
 
     private fun setStateObserver() {
-        viewModel.state.observe(viewLifecycleOwner) { connectionState ->
-            when (connectionState) {
-                is ConnectionState.Loading -> {
-                    setLoadingState()
-                }
-                is ConnectionState.Connected -> {
-                    setConnectedState(connectionState.smartLedAddress)
-                    navigateToControlPanel()
-                }
-                is ConnectionState.Error -> {
-                    setErrorState()
-                }
-                is ConnectionState.NoConnection -> {
-                    setNoConnectionState()
-                }
-            }
+        viewModel.state.observe(viewLifecycleOwner) {
+            it.apply(
+                progressBar = mProgress,
+                btnConnect = mBtnConnect,
+                txtConnectionResult = mTxtConnectionResult,
+                fairyLightsView = mFairyLightsView,
+                connectedText = getString(R.string.connected_text),
+                connectionErrorText = getString(R.string.connection_error_text),
+                noConnectionText = getString(R.string.no_connection_text)
+            )
         }
     }
 
@@ -126,32 +73,5 @@ class ConnectionFragment : Fragment(R.layout.fragment_connection) {
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
-    }
-
-    private fun setLoadingState() {
-        mProgress.visibility = View.VISIBLE
-        mBtnConnect.isEnabled = false
-        mTxtConnectionResult.visibility = View.GONE
-    }
-
-    private fun setConnectedState(address: String) {
-        mProgress.visibility = View.GONE
-        mBtnConnect.isEnabled = false
-        mTxtConnectionResult.visibility = View.VISIBLE
-        mTxtConnectionResult.text = "${getString(R.string.connected_text)} to $address"
-    }
-
-    private fun setErrorState() {
-        mProgress.visibility = View.GONE
-        mBtnConnect.isEnabled = true
-        mTxtConnectionResult.visibility = View.VISIBLE
-        mTxtConnectionResult.text = getString(R.string.connection_error_text)
-    }
-
-    private fun setNoConnectionState() {
-        mProgress.visibility = View.GONE
-        mBtnConnect.isEnabled = true
-        mTxtConnectionResult.visibility = View.VISIBLE
-        mTxtConnectionResult.text = getString(R.string.no_connection_text)
     }
 }
