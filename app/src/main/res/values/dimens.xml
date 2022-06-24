@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="slider_trackHeight">14dp</dimen>
+    <dimen name="slider_thumbRadius">17dp</dimen>
+    <dimen name="slider_startMargin">64dp</dimen>
+    <dimen name="slider_endMargin">64dp</dimen>
+    <dimen name="slider_bottomMargin">24dp</dimen>
+</resources>

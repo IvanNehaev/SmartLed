@@ -11,8 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
 
-    private lateinit var mBtnUp: Button
-    private lateinit var mBtnDown: Button
+
 
     private val mViewModel: ControlPanelViewModel by viewModels()
 
@@ -23,15 +22,6 @@ class ControlPanelFragment : Fragment(R.layout.fragment_control_panel) {
     }
 
     private fun setupUi(view: View) {
-        mBtnDown = view.findViewById(R.id.controlPanel_btnDown)
-        mBtnUp = view.findViewById(R.id.controlPanel_btnUp)
 
-        mBtnDown.setOnClickListener {
-            mViewModel.onButtonDownClick()
-        }
-
-        mBtnUp.setOnClickListener {
-            mViewModel.onButtonUpClick()
-        }
     }
 }

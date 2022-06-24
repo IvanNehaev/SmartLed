@@ -5,30 +5,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/controlPanel_btnUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/up_text"
-        app:layout_constraintBottom_toTopOf="@+id/controlPanel_glBottomButtons"
-        app:layout_constraintEnd_toStartOf="@+id/controlPanel_btnDown"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/controlPanel_btnDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/down_text"
-        app:layout_constraintBottom_toTopOf="@+id/controlPanel_glBottomButtons"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/controlPanel_btnUp" />
+    <com.nekhaev.android.smartled.presentation.views.fairyLightView.FairyLightsView
+        android:id="@+id/controlPanel_fairyLightView"
+        android:layout_width="match_parent"
+        android:layout_height="366dp"
+        app:layout_constraintBottom_toTopOf="@+id/controlPanel_guidLine50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/controlPanel_glBottomButtons"
+        android:id="@+id/controlPanel_guidLine50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/control_panel_sliderBrightness"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/control_panel_ivLightsOff"
+        app:layout_constraintEnd_toStartOf="@+id/control_panel_ivLigthsOn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/control_panel_ivLightsOff"
+        app:layout_constraintTop_toTopOf="@+id/control_panel_ivLightsOff"
+        app:thumbRadius="@dimen/slider_thumbRadius"
+        app:trackHeight="@dimen/slider_trackHeight" />
+
+    <ImageView
+        android:id="@+id/control_panel_ivLightsOff"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/control_panel_bottomGideline"
+        app:layout_constraintEnd_toStartOf="@+id/control_panel_sliderBrightness"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="@+id/control_panel_leftEdge_gideline"
+        app:srcCompat="@drawable/lights_off" />
+
+    <ImageView
+        android:id="@+id/control_panel_ivLigthsOn"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/control_panel_sliderBrightness"
+        app:layout_constraintEnd_toStartOf="@+id/control_panel_rightEdge_gideline"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/control_panel_sliderBrightness"
+        app:layout_constraintTop_toTopOf="@+id/control_panel_sliderBrightness"
+        app:srcCompat="@drawable/lights_on" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/control_panel_leftEdge_gideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/control_panel_rightEdge_gideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="32dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/control_panel_bottomGideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_end="64dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
